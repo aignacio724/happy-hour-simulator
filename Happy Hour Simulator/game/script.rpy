@@ -1,14 +1,14 @@
-﻿# The script of the game goes in this file.
+init:
+    $ time = 0 # Time offset from the first meeting.
+    $ endtime = 100;
+    $ points = 0 # You get these for doing some things.
+    $ fatigue = 0 # You get these for doing all things.
 
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
+# TODO: Meeting groups.
 
-# This is where the different conversation groups would go.
+# Images of meeting participants and their "animations" if applicable.
 
-# define e = Character("Eileen")
-
-# The game starts here.
-
+# DEBUG
 image cats:
     "cat1.jpg"
     pause 1.0
@@ -18,27 +18,65 @@ image cats:
     pause 1.0
     repeat
 
+image cats2:
+    "cat1.jpg"
+    pause 1.0
+    "cat2.jpg"
+    pause 1.0
+    "cat3.jpg"
+    pause 1.0
+    repeat
+
+# The phone to check the time with.
+screen phone:
+    vbox xalign 0.1 yalign 0.1:
+        imagebutton:
+            idle "phoneoff.png"
+            hover "phoneon.png"
+            action ui.callsinnewcontext("time_screen_label")
+
+screen time_screen:
+    frame:
+        has vbox
+        text "Time: [time]"
+        textbutton "Lock phone" action Return()
+
+label time_screen_label:
+    call screen time_screen
+    return
+
 label start:
 
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
-
+    # TODO: Rename to the background we actually want and remove "images/monitor.png"
     scene monitor
+    show screen phone
 
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
+    # Show meeting participants
+    # TODO: Extract out to helper function that populates call with multiple people
 
-    # This is where the different monitor backgrounds would go.
-
-    # show eileen happy
-
-    # These display lines of dialogue.
-
+    # DEBUG
     show cats at top
+    show cats2 # Appears at bottom center without "at"
 
-    "Test."
+    while time <= endtime:
+        menu:
+            "Talk about work.":
+                "You talk about work."
+                $time += 10
+                $fatigue += 10
+
+            "Talk about life.":
+                "You talk about life."
+                $time += 10
+                $fatigue += 10
+                $points += 10
+
+            "Talk about the cat judging you from the sofa.":
+                "The cat eyes you suspiciously."
+                $time += 10
+                $fatigue += 5
+
+        "You have [fatigue] points of fatigue."
 
     # e "You've created a new Ren'Py game."
 
