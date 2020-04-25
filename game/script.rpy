@@ -1,8 +1,14 @@
+init python:
+    # TODO: Display in 12H format?
+    def format_time(minutes):
+        return '{:02d}:{:02d}'.format(*divmod(minutes, 60))
+
 init:
-    $ time = 0 # Time offset from the first meeting.
-    $ endtime = 100;
+    $ time = 960 # Time offset from the first meeting in minutes. The first meeting starts at 04:00 PM.
+    $ endtime = 1170 # Time offset from the first meeting in minutes. The last meeting ends at 07:30 PM.
+    # TODO: Gather points for different meetings.
     $ points = 0 # You get these for doing some things.
-    $ fatigue = 0 # You get these for doing all things.
+    $ fatigue = 0 # You get these for doing all things.   
 
 # TODO: Meeting groups.
 
@@ -29,20 +35,21 @@ image cats2:
 
 # The phone to check the time with.
 screen phone:
-    vbox xalign 0.1 yalign 0.1:
+    vbox xalign 0.05 yalign 0.05:
         imagebutton:
             idle "phoneoff.png"
             hover "phoneon.png"
             action ui.callsinnewcontext("time_screen_label")
 
-screen time_screen:
+screen time_screen(displayTime):
     frame:
         has vbox
-        text "Time: [time]"
+        text "[displayTime]"
         textbutton "Lock phone" action Return()
 
 label time_screen_label:
-    call screen time_screen
+    $ displayTime = format_time(time)
+    call screen time_screen(displayTime)
     return
 
 label start:
@@ -77,10 +84,6 @@ label start:
                 $fatigue += 5
 
         "You have [fatigue] points of fatigue."
-
-    # e "You've created a new Ren'Py game."
-
-    # e "Once you add a story, pictures, and music, you can release it to the world!"
 
     # This ends the game.
 
