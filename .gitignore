@@ -2,6 +2,7 @@
 *.rpyb
 *.rpymc
 
+errors.txt
 log.txt
 traceback.txt
 cache/
