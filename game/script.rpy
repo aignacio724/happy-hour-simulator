@@ -64,6 +64,17 @@ image shiba:
     pause 0.3
     repeat
 
+image skelly:
+    "skelly1.png"
+    pause 1.0
+    "skelly2.png"
+    pause 4.5
+    "skelly1.png"
+    pause 2.5
+    "skelly2.png"
+    pause 2.5
+    repeat
+
 image shiba1:
     "shiba1.png"
     pause 5.0
@@ -185,7 +196,7 @@ label populate_meeting:
     show userC:
         xalign centerColumnX
         yalign centerRowY
-    show shiba4:
+    show skelly:
         xalign rightColumnX
         yalign centerRowY
     return
