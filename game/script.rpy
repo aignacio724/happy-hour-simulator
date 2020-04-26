@@ -506,13 +506,24 @@ init python hide:
 
 # This is called in a new context when the konami code is entered.
 label konami_code:
-    "You just earned an additional 30 lives!"
+    "BORK BORK BORK"
+    scene monitor
 
-    "While they might not be of much use in a dating sim, good for you!"
-
+    call populate_shiba
+    "MUCH SURPRISE. MUCH SHIBA. WOW"
+    while True:
+        menu:
+            "Pet":
+                "You pet the Shibas"
+                "Bork Bork!"
+            "Give treat":
+                "Much treat! Much Bork!"
+            "Much tired":
+                "You leave to nap"
+                "*Whine* bork..?"
+                return
+        "BORK"
     return
-#     $shib_mode = True
-#     return
 
 label populate_shiba:
     $ leftColumnX = 0.16
