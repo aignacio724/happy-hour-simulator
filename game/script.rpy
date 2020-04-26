@@ -108,22 +108,22 @@ label convo_drink:
 
         "I have some beers left over":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue = 10
 
         " I found some old wine.":
             "Oh, what kind of wine?"
             menu:
                 "A white":
                     $time += 10
-                    added_fatigue = 10
+                    $added_fatigue = 10
 
                 "A red":
                     $time += 10
-                    added_fatigue = 10
+                    $added_fatigue = 10
 
         "I need to buy more drinks soon":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue = 10
 
         "<say nothing>":
             call end_conversation
@@ -138,18 +138,18 @@ label convo_family:
     menu:
         "They're doing well":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue = 10
 
         "I haven't talked to them":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue = 10
 
         "What family?":
-            added_fatigue = 10
+            $added_fatigue = 10
             call end_conversation
 
         "<say nothing>":
-            added_fatigue = 10
+            $added_fatigue = 10
             call end_conversation
 
     "Gained +[added_fatigue] points of fatigue."
@@ -163,15 +163,15 @@ label convo_pets:
     menu:
         "What pet?":
             $time += 10
-            added_fatigue += 10
+            $added_fatigue += 10
 
         "Sure!":
             $time += 10
-            added_fatigue += 10
+            $added_fatigue += 10
             call happy
 
         "I am the pet":
-            added_fatigue = 10
+            $added_fatigue = 10
             call end_conversation
 
     "Gained +[added_fatigue] points of fatigue."
@@ -185,18 +185,18 @@ label convo_week:
     menu:
         "The week went by really quickly":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue += 10
 
         "Could have been shorter":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue += 10
 
         "It was okay":
             $time += 10
-            added_fatigue = 10
+            $added_fatigue += 10
 
         "<say nothing>":
-            added_fatigue = 10
+            $added_fatigue = 10
             call end_conversation
 
     "Gained +[added_fatigue] points of fatigue."
@@ -210,13 +210,13 @@ label convo_cheers:
         "Raise glass and cheer":
             if $fatigue is > 50:
                 "You spill your drink"
-                added_fatigue = 30
+                $added_fatigue = 30
                 $time += 30
             else:
                 "You take a large sip"
-                added_fatigue = 20
+                $added_fatigue = 20
         "Do nothing":
-            added_fatigue = 50
+            $added_fatigue = 50
 
     "Gained +[added_fatigue] points of fatigue."
     $fatigue += added_fatigue
