@@ -22,24 +22,17 @@ init:
 
 # Images of meeting participants and their "animations" if applicable.
 
-# DEBUG
-image cats:
-    "cat1.jpg"
-    pause 1.0
-    "cat2.jpg"
-    pause 1.0
-    "cat3.jpg"
-    pause 1.0
-    repeat
+image user1:
+    "user1.png"
 
-image cats2:
-    "cat1.jpg"
-    pause 1.0
-    "cat2.jpg"
-    pause 1.0
-    "cat3.jpg"
-    pause 1.0
-    repeat
+image user2:
+    "user2.png"
+
+image user3:
+    "user3.png"
+
+image shiba:
+    "shiba.png"
 
 # DEBUG: Used to see all variables at any point in the game.
 screen debug:
@@ -101,6 +94,10 @@ label fatigue_feedback:
     else:
         "You fool."
 
+label populate_meeting:
+    show user1 at top
+    return
+
 label start:
     # TODO: Remove this and the function being called
     show screen debug
@@ -109,12 +106,7 @@ label start:
     # TODO: Rename to the background we actually want and remove "images/monitor.png"
     scene monitor
 
-    # Show meeting participants
-    # TODO: Extract out to helper function that populates call with multiple people
-
-    # DEBUG
-    show cats at top
-    show cats2 # Appears at bottom center without "at"
+    call populate_meeting
 
     label intro:
         if intro:
@@ -146,270 +138,6 @@ label start:
         jump begin
     else:
         return # Ends the game.
-
-label life_topic:
-    $ rand_topic = "convo_" + str(renpy.random.choice(['drink', 'pets', 'family', 'weekend', 'home', 'exercise']))
-    call expression rand_topic
-    return
-
-label work_topic:
-    $ rand_topic = "convo_" + str(renpy.random.choice(['week', 'cheers', 'competitor', 'quarantine', 'zoom']))
-    call expression rand_topic
-    return
-
-label convo_drink:
-
-    $added_fatigue = 0
-    "What are you drinking?"
-
-    menu:
-
-        "I have some beers left over":
-            $time += 10
-            $added_fatigue = 10
-
-        " I found some old wine.":
-            "Oh, what kind of wine?"
-            menu:
-                "A white":
-                    $time += 10
-                    $added_fatigue = 10
-
-                "A red":
-                    $time += 10
-                    $added_fatigue = 10
-
-        "I need to buy more drinks soon":
-            $time += 10
-            $added_fatigue = 10
-
-        "<say nothing>":
-            call end_conversation
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_family:
-    $added_fatigue = 0
-    "How's your family?"
-
-    menu:
-        "They're doing well":
-            $time += 10
-            $added_fatigue = 10
-
-        "I haven't talked to them":
-            $time += 10
-            $added_fatigue = 10
-
-        "What family?":
-            $added_fatigue = 10
-            call end_conversation
-
-        "<say nothing>":
-            $added_fatigue = 10
-            call end_conversation
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_pets:
-    $added_fatigue = 0
-    "Can I see your pet?"
-
-    menu:
-        "What pet?":
-            $time += 10
-            $added_fatigue += 10
-
-        "Sure!":
-            $time += 10
-            $added_fatigue += 10
-            call happy
-
-        "I am the pet":
-            $added_fatigue = 10
-            call end_conversation
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_week:
-    $added_fatigue = 0
-    "How was your week?"
-
-    menu:
-        "The week went by really quickly":
-            $time += 10
-            $added_fatigue += 10
-
-        "Could have been shorter":
-            $time += 10
-            $added_fatigue += 10
-
-        "It was okay":
-            $time += 10
-            $added_fatigue += 10
-
-        "<say nothing>":
-            $added_fatigue = 10
-            call end_conversation
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_cheers:
-    $added_fatigue = 0
-    "Cheers!"
-    menu:
-        "Raise glass and cheer":
-            if fatigue > 50:
-                "You spill your drink. Your pants are wet"
-                $added_fatigue = 30
-                $time += 30
-            else:
-                "You take a large sip"
-                $added_fatigue = 20
-        "Do nothing":
-            $added_fatigue = 50
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_weekend:
-    $added_fatigue = 0
-    "Any plans for the weekend?"
-
-    menu:
-        "Do some exercise":
-            $time += 10
-            $added_fatigue = 20
-        "Wait in line at Costco":
-            $time += 10
-            $added_fatigue = 10
-        "<Sarcastic Response>":
-            $time += 10
-            $added_fatigue = 5
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_competitor:
-    $added_fatigue = 0
-    "Hah, how do you think Company X is doing?"
-
-    menu:
-        "I actually like using their product!":
-            $time += 50
-            $added_fatigue = 30
-        "Let's not bring up work in this...":
-            $time += 10
-            $added_fatigue = 10
-        "Yeah, they're terrible":
-            $time += 10
-            $added_fatigue = 10
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_home:
-    $added_fatigue = 0
-    "How's home?"
-
-    menu:
-        "It's a mess":
-            $time += 10
-            $added_fatigue = 10
-        "It has been claimed by my pet":
-            $time += 10
-            $added_fatigue = 10
-        "Trying to fend off bandits":
-            $time += 10
-            $added_fatigue = 20
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_exercise:
-    $added_fatigue = 0
-    "Did you do any exercise?"
-
-    menu:
-        "Yeah, I just paced around my room":
-            $time += 10
-            $added_fatigue = 15
-        "Went for a short walk":
-            $time += 10
-            $added_fatigue = 25
-        "Nope!":
-            $time += 10
-            $added_fatigue = 5
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_quarantine:
-    $added_fatigue = 0
-    "When do you think this quarantine is over?"
-
-    menu:
-        "It will never end":
-            $time += 10
-            $added_fatigue = 15
-        "<Optimistic response>":
-            $time += 10
-            $added_fatigue = 20
-        "<Insert actual date>":
-            $time += 10
-            $added_fatigue = 25
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label convo_zoom:
-    $added_fatigue = 0
-    "Why aren't you using a Zoom Background"
-
-    menu:
-        "I think they're dumb":
-            $time += 10
-            $added_fatigue = 10
-        "Turn off camera":
-            $time += 10
-            $added_fatigue = 1
-        "Fine, I'll put one on...":
-            $time += 10
-            $added_fatigue = 30
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
-    return
-
-label happy:
-    "Awww what a cute <insert animal>"
-    return
-
-label end_conversation:
-    "Okay..."
-    return
-
-label life_topic:
-    $rand_topic = "convo_" + str(renpy.random.choice(['drink', 'pets', 'family', 'weekend', 'home', 'exercise']))
-    call expression rand_topic
-    return
-
-label work_topic:
-    $rand_topic = "convo_" + str(renpy.random.choice(['week', 'cheers', 'competitor', 'quarantine', 'zoom']))
-    call expression rand_topic
     return
 
 label convo_drink:
