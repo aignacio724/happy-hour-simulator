@@ -227,11 +227,9 @@ label start:
 
         menu:
             "Talk about work.":
-#                 call step_time(10)
                 call work_topic
 
             "Talk about life.":
-#                 call step_time(10)
                 call life_topic
 
             "Drink":
@@ -527,6 +525,9 @@ label konami_code:
             "Pet":
                 "You pet the Shibas"
                 "Bork Bork!"
+            "Smush face":
+                "You smuch the doggo's face"
+                "Borf Borf"
             "Give treat":
                 "Much treat! Much Bork!"
             "Much tired":
