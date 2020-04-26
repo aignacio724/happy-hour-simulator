@@ -9,6 +9,7 @@ init:
     # TODO: Gather points for different meetings.
     $ points = 0 # You get these for doing some things.
     $ fatigue = 0 # You get these for doing all things.
+    $ multiplier = 1 # This is used to multiply the '$time' value. This multiplier is increased when you drink
 
 # TODO: Meeting groups.
 
@@ -69,18 +70,24 @@ label start:
         menu:
             "Talk about work.":
                 "You talk about work."
-                $time += 10
+                $time += (10 * multiplier)
                 call work_topic
 
             "Talk about life.":
                 "You talk about life."
-                $time += 10
+                $time += (10 * multiplier)
                 $points += 10
                 call life_topic
 
             "Talk about the cat judging you from the sofa.":
                 "The cat eyes you suspiciously."
-                $time += 10
+                $time += (10 * multiplier)
+                $fatigue += 5
+
+            "Drink":
+                "You take a swig of your drink."
+                $multiplier += 1
+                $time += (10 * multiplier)
                 $fatigue += 5
 
         "You have [fatigue] points of fatigue."
@@ -107,22 +114,22 @@ label convo_drink:
     menu:
 
         "I have some beers left over":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
 
         " I found some old wine.":
             "Oh, what kind of wine?"
             menu:
                 "A white":
-                    $time += 10
+                    $time += (10 * multiplier)
                     $added_fatigue = 10
 
                 "A red":
-                    $time += 10
+                    $time += (10 * multiplier)
                     $added_fatigue = 10
 
         "I need to buy more drinks soon":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
 
         "<say nothing>":
@@ -137,11 +144,11 @@ label convo_family:
 
     menu:
         "They're doing well":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
 
         "I haven't talked to them":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
 
         "What family?":
@@ -162,11 +169,11 @@ label convo_pets:
 
     menu:
         "What pet?":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue += 10
 
         "Sure!":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue += 10
             call happy
 
@@ -184,15 +191,15 @@ label convo_week:
 
     menu:
         "The week went by really quickly":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue += 10
 
         "Could have been shorter":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue += 10
 
         "It was okay":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue += 10
 
         "<say nothing>":
@@ -215,6 +222,7 @@ label convo_cheers:
             else:
                 "You take a large sip"
                 $added_fatigue = 20
+                $multiplier += 2
         "Do nothing":
             $added_fatigue = 50
 
@@ -228,13 +236,13 @@ label convo_weekend:
 
     menu:
         "Do some exercise":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 20
         "Wait in line at Costco":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
         "<Sarcastic Response>":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 5
 
     "Gained +[added_fatigue] points of fatigue."
@@ -250,10 +258,10 @@ label convo_competitor:
             $time += 50
             $added_fatigue = 30
         "Let's not bring up work in this...":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
         "Yeah, they're terrible":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
 
     "Gained +[added_fatigue] points of fatigue."
@@ -266,13 +274,13 @@ label convo_home:
 
     menu:
         "It's a mess":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
         "It has been claimed by my pet":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
         "Trying to fend off bandits":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 20
 
     "Gained +[added_fatigue] points of fatigue."
@@ -285,13 +293,13 @@ label convo_exercise:
 
     menu:
         "Yeah, I just paced around my room":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 15
         "Went for a short walk":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 25
         "Nope!":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 5
 
     "Gained +[added_fatigue] points of fatigue."
@@ -304,13 +312,13 @@ label convo_quarantine:
 
     menu:
         "It will never end":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 15
         "<Optimistic response>":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 20
         "<Insert actual date>":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 25
 
     "Gained +[added_fatigue] points of fatigue."
@@ -323,13 +331,13 @@ label convo_zoom:
 
     menu:
         "I think they're dumb":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 10
         "Turn off camera":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 1
         "Fine, I'll put one on...":
-            $time += 10
+            $time += (10 * multiplier)
             $added_fatigue = 30
 
     "Gained +[added_fatigue] points of fatigue."
