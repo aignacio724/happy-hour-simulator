@@ -143,7 +143,6 @@ image shiba6:
 # DEBUG: Used to see all variables at any point in the game.
 screen debug:
     frame:
-        xalign 1.0
         has vbox
         $ displayTime = format_time(time)
         text "Time: [time]"
@@ -151,6 +150,13 @@ screen debug:
         text "Points: [points]"
         text "Fatigue: [fatigue]"
         text "Drunk Multiplier: [drunkMultiplier]x"
+
+screen time:
+    frame:
+        xalign 1.0
+        has vbox
+        $ displayTime = format_time(time)
+        text "[displayTime]"
 
 # A convenient way to take actions.
 label step_time(timeModifier = 0, fatigueModifier = 0):
@@ -213,9 +219,6 @@ label populate_meeting:
     return
 
 label start:
-    if enableDebug:
-        show screen debug
-
     # TODO: Rename to the background we actually want and remove "images/monitor.png"
     scene monitor
 
@@ -223,6 +226,11 @@ label start:
         call populate_shiba # so shiba
     else:
         call populate_meeting
+
+    if enableDebug:
+        show screen debug
+
+    show screen time
 
     label intro:
         if intro:
