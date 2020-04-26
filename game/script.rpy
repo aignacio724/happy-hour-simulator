@@ -73,8 +73,8 @@ label time_screen_label:
     return
 
 # A convenient way to take actions.
-label step_time(timeModifier = 10, fatigueModifier = 0):
-    $ time += int(baseTime + timeunits * drunkMultiplier)
+label step_time(timeModifier = 0, fatigueModifier = 0):
+    $ time += int((baseTime + timeModifier) * drunkMultiplier)
     $ fatigue += (baseFatigue + fatigueModifier)
     # Make sure fatigue can't go negative.
     if fatigue < 0:
