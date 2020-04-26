@@ -130,25 +130,6 @@ screen debug:
         text "Fatigue: [fatigue]"
         text "Drunk Multiplier: [drunkMultiplier]x"
 
-# The phone to check the time with.
-screen phone:
-    vbox xalign 0.05 yalign 0.05:
-        imagebutton:
-            idle "phoneoff.png"
-            hover "phoneon.png"
-            action ui.callsinnewcontext("time_screen_label")
-
-screen time_screen(displayTime):
-    frame:
-        has vbox
-        text "[displayTime]"
-        textbutton "Lock phone" action Return()
-
-label time_screen_label:
-    $ displayTime = format_time(time)
-    call screen time_screen(displayTime)
-    return
-
 # A convenient way to take actions.
 label step_time(timeModifier = 0, fatigueModifier = 0):
     $ time += int((baseTime + timeModifier) * drunkMultiplier)
@@ -212,7 +193,6 @@ label populate_meeting:
 label start:
     # TODO: Remove this and the function being called
     show screen debug
-    show screen phone
 
     # TODO: Rename to the background we actually want and remove "images/monitor.png"
     scene monitor
