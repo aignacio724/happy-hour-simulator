@@ -22,14 +22,38 @@ init:
 
 # Images of meeting participants and their "animations" if applicable.
 
-image user1:
-    "user1.png"
+image userA:
+    "userA1.png"
+    pause 5.0
+    "userA2.png"
+    pause 0.1
+    "userA1.png"
+    pause 3.0
+    "userA2.png"
+    pause 0.1
+    repeat
 
-image user2:
-    "user2.png"
+image userB:
+    "userB1.png"
+    pause 4.0
+    "userB2.png"
+    pause 0.1
+    "userB1.png"
+    pause 6.5
+    "userB2.png"
+    pause 0.1
+    repeat
 
-image user3:
-    "user3.png"
+image userC:
+    "userC1.png"
+    pause 0.1
+    "userC2.png"
+    pause 5.0
+    "userC1.png"
+    pause 2.0
+    "userC2.png"
+    pause 7.0
+    repeat
 
 image shiba:
     "shiba1.png"
@@ -161,24 +185,24 @@ label populate_meeting:
     $ centerRowY = 0.42
 
     # Row 1
-    show shiba1:
+    show userA:
         xalign leftColumnX
         yalign topRowY
-    show shiba2:
+    show userB:
         xalign centerColumnX
         yalign topRowY
-    show shiba3:
+    show shiba1:
         xalign rightColumnX
         yalign topRowY
 
     # Row 2
-    show shiba4:
+    show shiba3:
         xalign leftColumnX
         yalign centerRowY
-    show shiba5:
+    show userC:
         xalign centerColumnX
         yalign centerRowY
-    show shiba6:
+    show shiba4:
         xalign rightColumnX
         yalign centerRowY
     return
