@@ -18,6 +18,8 @@ init:
 
     $ intro = True
 
+define player = Character("[name]", color="#FF0000")
+
 # TODO: Meeting groups.
 
 # Images of meeting participants and their "animations" if applicable.
@@ -195,6 +197,9 @@ label start:
 
     label intro:
         if intro:
+            $ name = renpy.input("What's your name?")
+            $ name = name.strip()
+            "Hello! [name]!"
             "Calling into the first meeting. Make sure your webcam is in its fully upright position."
             $ intro = False # TODO: Figure out why this flag is necessary to keep this thing from appearing again and again.
 
@@ -204,22 +209,22 @@ label start:
 
         menu:
             "Talk about work.":
-                call step_time(10)
+#                 call step_time(10)
                 call work_topic
 
             "Talk about life.":
-                call step_time(10)
+#                 call step_time(10)
                 call life_topic
 
             "Drink":
                 "You do that"
                 $ drunkMultiplier += 0.1
                 call step_time(5)
-            
+
         label after_menu:
             call fatigue_feedback
 
-    if time >= endtime:
+    if time <= endtime:
         jump begin
     else:
         return # Ends the game.
@@ -237,239 +242,174 @@ label work_topic:
 
 label convo_drink:
 
-    $added_fatigue = 0
-    "What are you drinking?"
+    "Hey [player], what are you drinking?"
 
     menu:
-
         "I have some beers left over":
-            $time += 10
-            $added_fatigue = 10
+            call step_time()
 
-        " I found some old wine.":
+        "I found some old wine.":
             "Oh, what kind of wine?"
             menu:
                 "A white":
-                    $time += 10
-                    $added_fatigue = 10
+                    call step_time()
 
                 "A red":
-                    $time += 10
-                    $added_fatigue = 10
+                    call step_time()
 
         "I need to buy more drinks soon":
-            $time += 10
-            $added_fatigue = 10
+            call step_time()
 
         "<say nothing>":
             call end_conversation
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
     return
 
 label convo_family:
-    $added_fatigue = 0
-    "How's your family?"
+    "Hey [player], how's your family?"
 
     menu:
         "They're doing well":
-            $time += 10
-            $added_fatigue = 10
+            call step_time()
 
         "I haven't talked to them":
-            $time += 10
-            $added_fatigue = 10
+            call step_time()
 
         "What family?":
-            $added_fatigue = 10
             call end_conversation
 
         "<say nothing>":
-            $added_fatigue = 10
             call end_conversation
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
     return
 
 label convo_pets:
-    $added_fatigue = 0
-    "Can I see your pet?"
+    "Hey [player], can I see your pet?"
 
     menu:
         "What pet?":
-            $time += 10
-            $added_fatigue += 10
+            call step_time()
 
         "Sure!":
-            $time += 10
-            $added_fatigue += 10
+            call step_time()
             call happy
 
         "I am the pet":
-            $added_fatigue = 10
             call end_conversation
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
     return
 
 label convo_week:
-    $added_fatigue = 0
-    "How was your week?"
+    "Hey [player], how was your week?"
 
     menu:
         "The week went by really quickly":
-            $time += 10
-            $added_fatigue += 10
+            call step_time()
 
         "Could have been shorter":
-            $time += 10
-            $added_fatigue += 10
+            call step_time()
 
         "It was okay":
-            $time += 10
-            $added_fatigue += 10
+            call step_time()
 
         "<say nothing>":
-            $added_fatigue = 10
             call end_conversation
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
     return
 
 label convo_cheers:
-    $added_fatigue = 0
-    "Cheers!"
+    "Cheers [player]!"
     menu:
         "Raise glass and cheer":
             if fatigue > 50:
+                # TODO: Reset fatigue here?
                 "You spill your drink. Your pants are wet"
-                $added_fatigue = 30
-                $time += 30
+                call step_time(5, 10)
             else:
                 "You take a large sip"
-                $added_fatigue = 20
+                $drunkMultiplier += 0.5
+                call step_time(2, 10)
         "Do nothing":
-            $added_fatigue = 50
-
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+            call step_time()
     return
 
 label convo_weekend:
-    $added_fatigue = 0
-    "Any plans for the weekend?"
+    "Hey [player], any plans for the weekend?"
 
     menu:
         "Do some exercise":
-            $time += 10
-            $added_fatigue = 20
-        "Wait in line at Costco":
-            $time += 10
-            $added_fatigue = 10
-        "<Sarcastic Response>":
-            $time += 10
-            $added_fatigue = 5
+            call step_time()
 
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+        "Wait in line at Costco":
+            call step_time()
+        "<Sarcastic Response>":
+            call step_time()
     return
 
 label convo_competitor:
-    $added_fatigue = 0
-    "Hah, how do you think Company X is doing?"
+    "Hah, hey [player] how do you think Company X is doing?"
 
     menu:
         "I actually like using their product!":
-            $time += 50
-            $added_fatigue = 30
-        "Let's not bring up work in this...":
-            $time += 10
-            $added_fatigue = 10
-        "Yeah, they're terrible":
-            $time += 10
-            $added_fatigue = 10
+            call step_time()
 
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+        "Let's not bring up work in this...":
+            call step_time()
+
+        "Yeah, they're terrible":
+            call step_time()
     return
 
 label convo_home:
-    $added_fatigue = 0
-    "How's home?"
+    "[player], how's home?"
 
     menu:
         "It's a mess":
-            $time += 10
-            $added_fatigue = 10
-        "It has been claimed by my pet":
-            $time += 10
-            $added_fatigue = 10
-        "Trying to fend off bandits":
-            $time += 10
-            $added_fatigue = 20
+            call step_time()
 
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+        "It has been claimed by my pet":
+            call step_time()
+
+        "Trying to fend off bandits":
+            call step_time(fatigueModifier=10)
     return
 
 label convo_exercise:
-    $added_fatigue = 0
-    "Did you do any exercise?"
+    "Did you do any exercise [player]?"
 
     menu:
         "Yeah, I just paced around my room":
-            $time += 10
-            $added_fatigue = 15
-        "Went for a short walk":
-            $time += 10
-            $added_fatigue = 25
-        "Nope!":
-            $time += 10
-            $added_fatigue = 5
+            call step_time(fatigueModifier=5)
 
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+        "Went for a short walk":
+            call step_time(fatigueModifier=15)
+
+        "Nope!":
+            call step_time(fatigueModifier=5)
     return
 
 label convo_quarantine:
-    $added_fatigue = 0
-    "When do you think this quarantine is over?"
+    "When do you think this quarantine is over [player]?"
 
     menu:
         "It will never end":
-            $time += 10
-            $added_fatigue = 15
-        "<Optimistic response>":
-            $time += 10
-            $added_fatigue = 20
-        "<Insert actual date>":
-            $time += 10
-            $added_fatigue = 25
+            call step_time(fatigueModifier=5)
 
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+        "<Optimistic response>":
+            call step_time(fatigueModifier=10)
+
+        "<Insert actual date>":
+            call step_time(fatigueModifier=15)
     return
 
 label convo_zoom:
-    $added_fatigue = 0
-    "Why aren't you using a Zoom Background"
+    "[player]! Why aren't you using a Zoom Background!?"
 
     menu:
         "I think they're dumb":
-            $time += 10
-            $added_fatigue = 10
-        "Turn off camera":
-            $time += 10
-            $added_fatigue = 1
-        "Fine, I'll put one on...":
-            $time += 10
-            $added_fatigue = 30
+            call step_time()
 
-    "Gained +[added_fatigue] points of fatigue."
-    $fatigue += added_fatigue
+        "<Turn off camera>":
+            call step_time(fatigueModifier=-1)
+
+        "Fine, I'll put one on...":
+            call step_time(fatigueModifier=20)
     return
 
 label happy:
@@ -478,4 +418,5 @@ label happy:
 
 label end_conversation:
     "Okay..."
+    call step_time()
     return
