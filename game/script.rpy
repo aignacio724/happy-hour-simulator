@@ -317,7 +317,7 @@ label convo_drink:
     return
 
 label convo_family:
-    "Hey [player], how's your family?"
+    "How's your family, [player]?"
 
     menu:
         "They're doing well":
@@ -395,7 +395,7 @@ label convo_weekend:
     return
 
 label convo_competitor:
-    "Hah, hey [player] how do you think Company X is doing?"
+    "Hah, hey [player]! How do you think Company X is doing?"
 
     menu:
         "I actually like using their product!":
@@ -480,6 +480,7 @@ label end_conversation:
 # entered, this calls the konami_code label (in a new context, so that
 # the current game state isn't lost.
 
+# Enter the Konami code on the next screen after the start menu
 init python hide:
 
     class KonamiListener(renpy.Displayable):
@@ -551,6 +552,7 @@ init python hide:
     config.overlay_functions.append(konami_overlay)
 
 # This is called in a new context when the konami code is entered.
+# Enter the Konami code on the next screen after the start menu
 label konami_code:
     "BORK BORK BORK"
     scene monitor
