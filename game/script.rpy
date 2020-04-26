@@ -19,6 +19,8 @@ init:
     $ intro = True
     $ shib_mode = False
 
+    $ enableDebug = True
+
 define player = Character("[name]", color="#FF0000")
 
 # TODO: Meeting groups.
@@ -76,6 +78,14 @@ image skelly:
     pause 2.5
     repeat
 
+image snek:
+    "snek1.png"
+    pause 2.0
+    "snek2.png"
+    pause 0.5
+    repeat
+
+# wow
 image shiba1:
     "shiba1.png"
     pause 5.0
@@ -186,30 +196,31 @@ label populate_meeting:
     show userB:
         xalign centerColumnX
         yalign topRowY
-    show shiba1:
+    show snek:
         xalign rightColumnX
         yalign topRowY
 
     # Row 2
-    show shiba3:
+    show skelly:
         xalign leftColumnX
         yalign centerRowY
-    show userC:
+    show shiba:
         xalign centerColumnX
         yalign centerRowY
-    show skelly:
+    show userC:
         xalign rightColumnX
         yalign centerRowY
     return
 
 label start:
-    # TODO: Remove this and the function being called
-    show screen debug
+    if enableDebug:
+        show screen debug
 
     # TODO: Rename to the background we actually want and remove "images/monitor.png"
     scene monitor
+
     if shib_mode:
-        call populate_shiba
+        call populate_shiba # so shiba
     else:
         call populate_meeting
 
@@ -218,7 +229,7 @@ label start:
             $ name = renpy.input("What's your name?")
             $ name = name.strip()
             "Hello! [name]!"
-            "Calling into the first meeting. Make sure your webcam is in its fully upright position."
+            "Last Happy Hour of the day..."
             $ intro = False # TODO: Figure out why this flag is necessary to keep this thing from appearing again and again.
 
     label begin:
@@ -437,6 +448,8 @@ label end_conversation:
     call step_time()
     return
 
+# https://www.renpy.org/wiki/renpy/doc/cookbook/Konami_Code
+
 # This lets you easily add the Konami code to your Ren'Py game. When
 # the Konami code (up up down down left right left right a b) has been
 # entered, this calls the konami_code label (in a new context, so that
@@ -511,7 +524,6 @@ init python hide:
         ui.add(store.konami_listener)
 
     config.overlay_functions.append(konami_overlay)
-
 
 # This is called in a new context when the konami code is entered.
 label konami_code:
