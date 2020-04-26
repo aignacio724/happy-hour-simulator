@@ -128,11 +128,11 @@ label start:
 
         menu:
             "Talk about work.":
-                call step_time(10)
+#                 call step_time(10)
                 call work_topic
 
             "Talk about life.":
-                call step_time(10)
+#                 call step_time(10)
                 call life_topic
 
             "Drink":
@@ -143,7 +143,7 @@ label start:
         label after_menu:
             call fatigue_feedback
 
-    if time >= endtime:
+    if time <= endtime:
         jump begin
     else:
         return # Ends the game.
@@ -164,34 +164,34 @@ label convo_drink:
     "Hey [player], what are you drinking?"
 
     menu:
-        player "I have some beers left over":
-            call step_time(10, 10)
+        "I have some beers left over":
+            call step_time()
 
-        player "I found some old wine.":
+        "I found some old wine.":
             "Oh, what kind of wine?"
             menu:
-                player "A white":
-                    call step_time(10, 10)
+                "A white":
+                    call step_time()
 
-                player "A red":
-                    call step_time(10, 10)
+                "A red":
+                    call step_time()
 
-        player "I need to buy more drinks soon":
-            call step_time(10, 10)
+        "I need to buy more drinks soon":
+            call step_time()
 
-        player "<say nothing>":
+        "<say nothing>":
             call end_conversation
     return
 
 label convo_family:
-    "How's your family?"
+    "Hey [player], how's your family?"
 
     menu:
         "They're doing well":
-            call step_time(10, 10)
+            call step_time()
 
         "I haven't talked to them":
-            call step_time(10, 10)
+            call step_time()
 
         "What family?":
             call end_conversation
@@ -201,14 +201,14 @@ label convo_family:
     return
 
 label convo_pets:
-    "Can I see your pet?"
+    "Hey [player], can I see your pet?"
 
     menu:
         "What pet?":
-            call step_time(10, 10)
+            call step_time()
 
         "Sure!":
-            call step_time(10, 10)
+            call step_time()
             call happy
 
         "I am the pet":
@@ -216,119 +216,119 @@ label convo_pets:
     return
 
 label convo_week:
-    "How was your week?"
+    "Hey [player], how was your week?"
 
     menu:
         "The week went by really quickly":
-            call step_time(10, 10)
+            call step_time()
 
         "Could have been shorter":
-            call step_time(10, 10)
+            call step_time()
 
         "It was okay":
-            call step_time(10, 10)
+            call step_time()
 
         "<say nothing>":
             call end_conversation
     return
 
 label convo_cheers:
-    "Cheers!"
+    "Cheers [player]!"
     menu:
         "Raise glass and cheer":
             if fatigue > 50:
                 # TODO: Reset fatigue here?
                 "You spill your drink. Your pants are wet"
-                call step_time(30, 30)
+                call step_time(5, 10)
             else:
                 "You take a large sip"
                 $drunkMultiplier += 0.5
-                call step_time(10, 20)
+                call step_time(2, 10)
         "Do nothing":
-            call step_time(10, 20)
+            call step_time()
     return
 
 label convo_weekend:
-    "Any plans for the weekend?"
+    "Hey [player], any plans for the weekend?"
 
     menu:
         "Do some exercise":
-            call step_time(10, 20)
+            call step_time()
 
         "Wait in line at Costco":
-            call step_time(10, 10)
+            call step_time()
         "<Sarcastic Response>":
-            call step_time(10, 5)
+            call step_time()
     return
 
 label convo_competitor:
-    "Hah, how do you think Company X is doing?"
+    "Hah, hey [player] how do you think Company X is doing?"
 
     menu:
         "I actually like using their product!":
-            call step_time(60, 30)
+            call step_time()
 
         "Let's not bring up work in this...":
-            call step_time(10, 10)
+            call step_time()
 
         "Yeah, they're terrible":
-            call step_time(10, 10)
+            call step_time()
     return
 
 label convo_home:
-    "How's home?"
+    "[player], how's home?"
 
     menu:
         "It's a mess":
-            call step_time(10, 10)
+            call step_time()
 
         "It has been claimed by my pet":
-            call step_time(10, 10)
+            call step_time()
 
         "Trying to fend off bandits":
-            call step_time(10, 20)
+            call step_time(fatigueModifier=10)
     return
 
 label convo_exercise:
-    "Did you do any exercise?"
+    "Did you do any exercise [player]?"
 
     menu:
         "Yeah, I just paced around my room":
-            call step_time(10, 15)
+            call step_time(fatigueModifier=5)
 
         "Went for a short walk":
-            call step_time(10, 25)
+            call step_time(fatigueModifier=15)
 
         "Nope!":
-            call step_time(10, 5)
+            call step_time(fatigueModifier=5)
     return
 
 label convo_quarantine:
-    "When do you think this quarantine is over?"
+    "When do you think this quarantine is over [player]?"
 
     menu:
         "It will never end":
-            call step_time(10, 15)
+            call step_time(fatigueModifier=5)
 
         "<Optimistic response>":
-            call step_time(10, 20)
+            call step_time(fatigueModifier=10)
 
         "<Insert actual date>":
-            call step_time(10, 25)
+            call step_time(fatigueModifier=15)
     return
 
 label convo_zoom:
-    "Why aren't you using a Zoom Background"
+    "[player]! Why aren't you using a Zoom Background!?"
 
     menu:
         "I think they're dumb":
-            call step_time(10, 10)
+            call step_time()
 
         "<Turn off camera>":
-            call step_time(10, 1)
+            call step_time(fatigueModifier=-1)
 
         "Fine, I'll put one on...":
-            call step_time(10, 30)
+            call step_time(fatigueModifier=20)
     return
 
 label happy:
@@ -337,5 +337,5 @@ label happy:
 
 label end_conversation:
     "Okay..."
-    call step_time(10, 1)
+    call step_time()
     return
