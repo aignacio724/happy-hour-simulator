@@ -32,7 +32,11 @@ image user3:
     "user3.png"
 
 image shiba:
-    "shiba.png"
+    "shiba1.png"
+    pause 5.0
+    "shiba2.png"
+    pause 0.3
+    repeat
 
 # DEBUG: Used to see all variables at any point in the game.
 screen debug:
@@ -95,7 +99,7 @@ label fatigue_feedback:
         "You fool."
 
 label populate_meeting:
-    show user1 at top
+    show shiba at top
     return
 
 label start:
@@ -138,6 +142,16 @@ label start:
         jump begin
     else:
         return # Ends the game.
+    return
+
+label life_topic:
+    $ rand_topic = "convo_" + str(renpy.random.choice(['drink', 'pets', 'family', 'weekend', 'home', 'exercise']))
+    call expression rand_topic
+    return
+
+label work_topic:
+    $ rand_topic = "convo_" + str(renpy.random.choice(['week', 'cheers', 'competitor', 'quarantine', 'zoom']))
+    call expression rand_topic
     return
 
 label convo_drink:
