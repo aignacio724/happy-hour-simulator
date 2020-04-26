@@ -8,7 +8,7 @@ init:
     $ endtime = 1170 # Time offset from the first meeting in minutes. The last meeting ends at 07:30 PM.
     # TODO: Gather points for different meetings.
     $ points = 0 # You get these for doing some things.
-    $ fatigue = 0 # You get these for doing all things.   
+    $ fatigue = 0 # You get these for doing all things.
 
 # TODO: Meeting groups.
 
@@ -208,8 +208,8 @@ label convo_cheers:
     "Cheers!"
     menu:
         "Raise glass and cheer":
-            if $fatigue is > 50:
-                "You spill your drink"
+            if fatigue > 50:
+                "You spill your drink. Your pants are wet"
                 $added_fatigue = 30
                 $time += 30
             else:
