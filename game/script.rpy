@@ -4,11 +4,10 @@ init python:
         return '{:02d}:{:02d}'.format(*divmod(int(minutes), 60))
 
 init:
-    $ time = 960 # Time offset from the first meeting in minutes. The first meeting starts at 04:00 PM.
-    $ endtime = 1170 # Time offset from the first meeting in minutes. The last meeting ends at 07:30 PM.
+    $ time = 1050 # Start time for the meeting in minutes. 05:30 PM.
+    $ endtime = 1170 # End time for the meeting in minutes. 07:30 PM.
     $ drunkMultiplier = 1.00 # This increases every time you drink. Affects time spent taking actions.
 
-    # TODO: Gather points for different meetings.
     $ points = 0 # You get these for doing some things.
 
     $ baseTime = 10 # A base time value for all actions.
@@ -18,15 +17,18 @@ init:
 
     $ intro = True
     $ shib_mode = False
+    $ debug_mode = True # TODO: Set to false before release.
 
-    $ enableDebug = True
+    # Used to give fatigue feedback only once.
+    $ fatigue30 = False
+    $ fatigue50 = False
+    $ fatigue70 = False
+    $ fatigue90 = False
+    $ fatigue100 = False
 
 define player = Character("[name]", color="#FF0000")
 
-# TODO: Meeting groups.
-
-# Images of meeting participants and their "animations" if applicable.
-
+# Images of meeting participants and their "animations."
 image userA:
     "userA1.png"
     pause 5.0
@@ -140,7 +142,6 @@ image shiba6:
     pause 0.1
     repeat
 
-# DEBUG: Used to see all variables at any point in the game.
 screen debug:
     frame:
         has vbox
@@ -151,6 +152,7 @@ screen debug:
         text "Fatigue: [fatigue]"
         text "Drunk Multiplier: [drunkMultiplier]x"
 
+# TODO: Make this look better.
 screen time:
     frame:
         xalign 1.0
@@ -165,27 +167,37 @@ label step_time(timeModifier = 0, fatigueModifier = 0):
     # Make sure fatigue can't go negative.
     if fatigue < 0:
         $fatigue = 0
+
+    call fatigue_feedback
+
     return
 
-# label add_points(points, group):
-
 # Give the player feedback based on how much fatigue they have.
-# TODO: Only give each message once.
 label fatigue_feedback:
-    if fatigue < 20:
-        pass
-    elif fatigue < 30:
-        "You're starting to feel a little tired."
-    elif fatigue < 50:
-        "You feel a little tired."
-    elif fatigue < 70:
-        "You're getting there."
-    elif fatigue < 90:
-        "You're about to pass out."
-    elif fatigue < 100:
-        "You really should call it a night."
-    else:
+    if fatigue >= 100:
         "You fool."
+        $ fatigue90 = True
+        $ fatigue70 = True
+        $ fatigue50 = True
+        $ fatigue30 = True
+    elif fatigue >= 90 and not fatigue90:
+            "You're about to pass out."
+            $ fatigue90 = True
+            $ fatigue70 = True
+            $ fatigue50 = True
+            $ fatigue30 = True
+    elif fatigue >= 70 and not fatigue70:
+            "You're getting there."
+            $ fatigue70 = True
+            $ fatigue50 = True
+            $ fatigue30 = True
+    elif fatigue >= 50 and not fatigue50:
+            "You feel a little tired."
+            $ fatigue50 = True
+            $ fatigue30 = True
+    elif fatigue >= 30 and not fatigue30:
+            "You're starting to feel a little tired."
+            $ fatigue30 = True
 
 label populate_meeting:
     $ leftColumnX = 0.16
@@ -227,7 +239,7 @@ label start:
     else:
         call populate_meeting
 
-    if enableDebug:
+    if debug_mode:
         show screen debug
 
     show screen time
@@ -256,12 +268,17 @@ label start:
                 $ drunkMultiplier += 0.1
                 call step_time(5)
 
-        label after_menu:
-            call fatigue_feedback
-
     if time <= endtime:
         jump begin
+    elif fatigue >= 100:
+        "You passed out. No one on the call will forget."
+        return
     else:
+        "You survived the last Happy Hour of the day."
+
+        "You scored [points] Virtual Happy Hour Social Points."
+
+        "Until next week..."
         return # Ends the game.
     return
 
