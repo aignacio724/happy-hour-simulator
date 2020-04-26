@@ -90,12 +90,12 @@ label start:
     return
 
 label life_topic:
-    $rand_topic = "convo_" + str(renpy.random.choice(['drink', 'pets', 'family', 'weekend']))
+    $rand_topic = "convo_" + str(renpy.random.choice(['drink', 'pets', 'family', 'weekend', 'home', 'exercise']))
     call expression rand_topic
     return
 
 label work_topic:
-    $rand_topic = "convo_" + str(renpy.random.choice(['week', 'cheers', 'competitor']))
+    $rand_topic = "convo_" + str(renpy.random.choice(['week', 'cheers', 'competitor', 'quarantine', 'zoom']))
     call expression rand_topic
     return
 
