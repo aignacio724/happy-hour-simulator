@@ -24,23 +24,20 @@ define player = Character("[name]", color="#c8c8ff")
 
 # Images of meeting participants and their "animations" if applicable.
 
-# DEBUG
-image cats:
-    "cat1.jpg"
-    pause 1.0
-    "cat2.jpg"
-    pause 1.0
-    "cat3.jpg"
-    pause 1.0
-    repeat
+image user1:
+    "user1.png"
 
-image cats2:
-    "cat1.jpg"
-    pause 1.0
-    "cat2.jpg"
-    pause 1.0
-    "cat3.jpg"
-    pause 1.0
+image user2:
+    "user2.png"
+
+image user3:
+    "user3.png"
+
+image shiba:
+    "shiba1.png"
+    pause 5.0
+    "shiba2.png"
+    pause 0.3
     repeat
 
 # DEBUG: Used to see all variables at any point in the game.
@@ -103,6 +100,10 @@ label fatigue_feedback:
     else:
         "You fool."
 
+label populate_meeting:
+    show shiba at top
+    return
+
 label start:
     # TODO: Remove this and the function being called
     show screen debug
@@ -111,12 +112,7 @@ label start:
     # TODO: Rename to the background we actually want and remove "images/monitor.png"
     scene monitor
 
-    # Show meeting participants
-    # TODO: Extract out to helper function that populates call with multiple people
-
-    # DEBUG
-    show cats at top
-    show cats2 # Appears at bottom center without "at"
+    call populate_meeting
 
     label intro:
         if intro:
@@ -151,6 +147,7 @@ label start:
         jump begin
     else:
         return # Ends the game.
+    return
 
 label life_topic:
     $ rand_topic = "convo_" + str(renpy.random.choice(['drink', 'pets', 'family', 'weekend', 'home', 'exercise']))
