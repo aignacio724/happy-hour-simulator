@@ -38,6 +38,60 @@ image shiba:
     pause 0.3
     repeat
 
+image shiba1:
+    "shiba1.png"
+    pause 5.0
+    "shiba2.png"
+    pause 0.3
+    repeat
+
+image shiba2:
+    "shiba1.png"
+    pause 2.5
+    "shiba2.png"
+    pause 0.3
+    "shiba1.png"
+    pause 2.0
+    "shiba2.png"
+    pause 0.2
+    repeat
+
+image shiba3:
+    "shiba1.png"
+    pause 0.1
+    "shiba2.png"
+    pause 0.1
+    repeat
+
+image shiba4:
+    "shiba1.png"
+    pause 0.2
+    "shiba2.png"
+    pause 5.0
+    repeat
+
+image shiba5:
+    "shiba1.png"
+    pause 1.2
+    "shiba2.png"
+    pause 0.1
+    "shiba1.png"
+    pause 0.6
+    "shiba2.png"
+    pause 0.1
+    "shiba1.png"
+    pause 0.3
+    "shiba2.png"
+    pause 0.1
+    repeat
+
+image shiba6:
+    "shiba1.png"
+    pause 4.0
+    "shiba2.png"
+    pause 0.1
+    repeat
+
 # DEBUG: Used to see all variables at any point in the game.
 screen debug:
     frame:
@@ -99,7 +153,34 @@ label fatigue_feedback:
         "You fool."
 
 label populate_meeting:
-    show shiba at top
+    $ leftColumnX = 0.16
+    $ centerColumnX = 0.50
+    $ rightColumnX = 0.8425
+
+    $ topRowY = 0.02
+    $ centerRowY = 0.42
+
+    # Row 1
+    show shiba1:
+        xalign leftColumnX
+        yalign topRowY
+    show shiba2:
+        xalign centerColumnX
+        yalign topRowY
+    show shiba3:
+        xalign rightColumnX
+        yalign topRowY
+
+    # Row 2
+    show shiba4:
+        xalign leftColumnX
+        yalign centerRowY
+    show shiba5:
+        xalign centerColumnX
+        yalign centerRowY
+    show shiba6:
+        xalign rightColumnX
+        yalign centerRowY
     return
 
 label start:
