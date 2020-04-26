@@ -18,7 +18,7 @@ init:
 
     $ intro = True
 
-define player = Character("[name]", color="#c8c8ff")
+define player = Character("[name]", color="#FF0000")
 
 # TODO: Meeting groups.
 
