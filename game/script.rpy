@@ -4,7 +4,7 @@ init python:
         return '{:02d}:{:02d}'.format(*divmod(int(minutes), 60))
 
 init:
-    $ time = 1080 # Start time for the meeting in minutes. 06:00 PM.
+    $ time = 1050 # Start time for the meeting in minutes. 05:30 PM.
     $ endtime = 1170 # End time for the meeting in minutes. 07:30 PM.
     $ drunkMultiplier = 1.00 # This increases every time you drink. Affects time spent taking actions.
 
@@ -167,29 +167,37 @@ label step_time(timeModifier = 0, fatigueModifier = 0):
     # Make sure fatigue can't go negative.
     if fatigue < 0:
         $fatigue = 0
+
+    call fatigue_feedback
+
     return
 
 # Give the player feedback based on how much fatigue they have.
 label fatigue_feedback:
-    if fatigue < 20:
-        pass
-    elif fatigue < 30 and not fatigue30:
-        "You're starting to feel a little tired."
-        $ fatigue30 = True
-    elif fatigue < 50 and not fatigue50:
-        "You feel a little tired."
-        $ fatigue50 = True
-    elif fatigue < 70 and not fatigue70:
-        "You're getting there."
-        $ fatigue70 = True
-    elif fatigue < 90 and not fatigue90:
-        "You're about to pass out."
-        $ fatigue90 = True
-    elif fatigue < 100 and not fatigue100:
-        "You really should call it a night."
-        $ fatigue100 = True
-    else:
+    if fatigue >= 100:
         "You fool."
+        $ fatigue90 = True
+        $ fatigue70 = True
+        $ fatigue50 = True
+        $ fatigue30 = True
+    elif fatigue >= 90 and not fatigue90:
+            "You're about to pass out."
+            $ fatigue90 = True
+            $ fatigue70 = True
+            $ fatigue50 = True
+            $ fatigue30 = True
+    elif fatigue >= 70 and not fatigue70:
+            "You're getting there."
+            $ fatigue70 = True
+            $ fatigue50 = True
+            $ fatigue30 = True
+    elif fatigue >= 50 and not fatigue50:
+            "You feel a little tired."
+            $ fatigue50 = True
+            $ fatigue30 = True
+    elif fatigue >= 30 and not fatigue30:
+            "You're starting to feel a little tired."
+            $ fatigue30 = True
 
 label populate_meeting:
     $ leftColumnX = 0.16
@@ -260,12 +268,17 @@ label start:
                 $ drunkMultiplier += 0.1
                 call step_time(5)
 
-        label after_menu:
-            call fatigue_feedback
-
     if time <= endtime:
         jump begin
+    elif fatigue >= 100:
+        "You passed out. No one on the call will forget."
+        return
     else:
+        "You survived the last Happy Hour of the day."
+
+        "You scored [points] Virtual Happy Hour Social Points."
+
+        "Until next week..."
         return # Ends the game.
     return
 
